@@ -202,7 +202,7 @@ public class PaymentUI extends JPanel{
                 out = new DataOutputStream(_client.getOutputStream());
                 bfWriter =  new BufferedWriter(new OutputStreamWriter(_client.getOutputStream()));
                 scanner = new Scanner(System.in);
-                bfWriter.write("123124");
+                bfWriter.write(Tinput.getText());
                 bfWriter.newLine(); //HERE!!!!!!
                 bfWriter.flush();
 
