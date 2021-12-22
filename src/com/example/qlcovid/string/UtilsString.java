@@ -10,7 +10,8 @@ package com.example.qlcovid.string;
  */
 public class UtilsString {
     //public String dbURL  = "jdbc:sqlserver://NIERA-ASUS\\SQLEXPRESS";
-	public String dbURL="jdbc:sqlserver://NIERA-ASUS\\SQLEXPRESS; databaseName=HeThongQuanLiCovid";
+	//public String dbURL="jdbc:sqlserver://NIERA-ASUS\\SQLEXPRESS; databaseName=HeThongQuanLiCovid";
+    public String dbURL="jdbc:sqlserver://localhost:1433;databaseName=HeThongQuanLiCovid";
     public String username = "sa";
     public String password = "12345678";
     public String DATABASENAME = "HeThongQuanLiCovid";

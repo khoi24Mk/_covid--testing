@@ -28,7 +28,7 @@ public class PackageAbility extends JPanel {
         // add button
         this.add(_BpackageInfo);
         this.add(_BlookUp);
-        this.add(_BbuyPackage);
+        /*this.add(_BbuyPackage);*/
 
         // Button listioner
         _BpackageInfo.addActionListener(new ActionListener() {

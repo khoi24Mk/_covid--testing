@@ -2,6 +2,7 @@ package com.example.qlcovid.jframe.User.Info;
 
 import com.example.qlcovid.jframe.User.Package.PackageInfoUI;
 import com.example.qlcovid.model.User.PackageClass;
+import com.example.qlcovid.model.User.PackagePurchase;
 import com.example.qlcovid.model.User.PatientHistory;
 import com.example.qlcovid.model.User.PaymentHistory;
 import com.example.qlcovid.string.DatabaseConnection;
@@ -14,16 +15,21 @@ import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class PtablePayment extends JPanel {
 
     static ArrayList<PaymentHistory> historyList;
-    JTable paymentTalbe;
-    DefaultTableModel modelListPayment;
+    static JTable paymentTalbe;
+    static DefaultTableModel modelListPayment;
+
+    static String _username;
 
 
-    public PtablePayment(String username) throws SQLException {
+    public PtablePayment(String username) throws SQLException, ParseException {
+
+        _username = username;
 
         // getting data from database
         Statement statement = DatabaseConnection.getJDBC().createStatement();
@@ -107,7 +113,51 @@ public class PtablePayment extends JPanel {
         return sum;
     }
 
+
+    public static void resetModel() throws SQLException, ParseException {
+        Statement statement = DatabaseConnection.getJDBC().createStatement();
+        String sql = "SELECT * FROM payment_history\n"+
+                "WHERE citizen_id="+_username+";";
+        ResultSet rs = statement.executeQuery(sql);
+
+        historyList.clear();
+        while(rs.next()){
+
+            historyList.add(new PaymentHistory(
+                    rs.getString("payment_history_id"),
+                    rs.getString("citizen_id"),
+                    rs.getString("payment_date"),
+                    rs.getInt("payment_amount")
+            ));
+        }
+
+        modelListPayment = new DefaultTableModel(
+                new String[] { "ID","Customer ID","Date","Amount"},
+                0
+        );
+        for(PaymentHistory x : historyList){
+            modelListPayment.addRow(x.getObject());
+        }
+        paymentTalbe.setModel(modelListPayment);
+
+    }
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

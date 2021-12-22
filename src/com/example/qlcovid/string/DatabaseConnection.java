@@ -16,7 +16,8 @@ public class DatabaseConnection {
 //            String serverName = "DESKTOP-GN3V8MM";
 //            String mydatabase = "HeThongQuanLiCovid";
 
-            String url = "jdbc:sqlserver://NIERA-ASUS\\SQLEXPRESS; databaseName=HeThongQuanLiCovid; user=sa; password=12345678";
+            //String url = "jdbc:sqlserver://NIERA-ASUS\\SQLEXPRESS; databaseName=HeThongQuanLiCovid; user=sa; password=12345678";
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=HeThongQuanLiCovid;user=sa;password=12345678";
 
 
 

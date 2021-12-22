@@ -31,6 +31,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.*;
+import java.text.ParseException;
 import javax.swing.SwingConstants;
 
 import com.example.qlcovid.model.*;
@@ -107,7 +108,9 @@ public class LoginFrame extends JFrame {
 									} catch (IOException e1) {
 										// TODO Auto-generated catch block
 										e1.printStackTrace();
-									}									
+									} catch (ParseException parseException) {
+										parseException.printStackTrace();
+									}
 								}
 								if (rs.getObject("user_role").equals("admin")) {
 									
@@ -171,7 +174,7 @@ public class LoginFrame extends JFrame {
 								try {
 									screen = new PatientGUI(user.getText());
 							        screen.setVisible(true);
-								} catch (IOException e1) {
+								} catch (IOException | ParseException e1) {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
 								}

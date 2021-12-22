@@ -17,7 +17,7 @@ import java.sql.SQLException;
 
 import java.awt.event.ActionListener;
 import java.sql.Statement;
-
+import java.text.ParseException;
 
 
 public class PatientGUI extends JFrame {
@@ -68,7 +68,7 @@ public class PatientGUI extends JFrame {
 
 
     // constructor
-    public PatientGUI(String username) throws SQLException, IOException {
+    public PatientGUI(String username) throws SQLException, IOException, ParseException {
 
         // title
         super("Covid Patient");
@@ -106,7 +106,7 @@ public class PatientGUI extends JFrame {
         PmanagementInfo = new ManagementUI(username);
         PpackageInfo = new PurchaseUI(username);
         PbalanceInfo = new BalanceUI(username);
-        PpaymentInfo= new PaymentUI();
+        PpaymentInfo= new PaymentUI(username);
         //--
 
         // package panel: PURCHASE ability
@@ -130,7 +130,7 @@ public class PatientGUI extends JFrame {
         // add 3 option
         _Poption.add(_BinfoOption);
         _Poption.add(_BpackageOption);
-        _Poption.add(_BpaymentOption);
+        /*_Poption.add(_BpaymentOption);*/
         //--
 
         //bar 2: HEADER

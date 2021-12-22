@@ -1,5 +1,9 @@
 package com.example.qlcovid.jframe.User.Info;
 
+import com.example.qlcovid.jframe.User.PtablePurchase;
+import com.example.qlcovid.model.User.PaymentHistory;
+import com.example.qlcovid.string.DatabaseConnection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,21 +13,32 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class PaymentUI extends JPanel{
 
     Socket _client;
     String _msg;
+    String _username;
+
+    JTextField Tinput;
 
 
-
-    public PaymentUI() throws IOException {
+    public PaymentUI(String username) throws IOException {
         this.setLayout(null);/////////////// REMEMBER REPLACE THIS LAYOUT!!!!!!!!!!!
         this.setBackground(new Color(0xC2FFF9)); // for debug
         this.setBounds(0,80,400,390);
 
-
+        _username = username;
 
         JButton Bconnect = new JButton("Transfer");
         Bconnect.setBounds(10,10,100,30);
@@ -32,7 +47,7 @@ public class PaymentUI extends JPanel{
         JLabel Linput = new JLabel("Enter amount: ");
         Linput.setBounds(10,50,300,30);
 
-        JTextField Tinput = new JTextField();
+        Tinput = new JTextField();
         Tinput.setBounds(100,50,100,30);
 
 
@@ -84,6 +99,43 @@ public class PaymentUI extends JPanel{
               }
           }
         }.start();
+
+    }
+
+    public void insertPayment() {
+        String sql = "SET IDENTITY_INSERT payment_history ON \n" +
+                "INSERT INTO payment_history(payment_history_id, citizen_id, payment_date,payment_amount) " +
+                "VALUES (?, ?, ?, ?) \n" +
+                "SET IDENTITY_INSERT payment_history OFF";
+        PreparedStatement statement = null;
+        try {
+            statement = DatabaseConnection.getJDBC().prepareStatement(sql);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        int id_order = 1;
+        while(true) {
+            try {
+                statement.setString(1, String.valueOf(id_order));
+                statement.setString(2, _username);
+                statement.setString(3, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")));
+                //ZonedDateTime.parse(LocalDateTime.now())
+                //LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"))
+                statement.setString(4, Tinput.getText() );
+
+                statement.executeUpdate();
+
+                JOptionPane.showMessageDialog(null, "Succeeded", "Message", JOptionPane.INFORMATION_MESSAGE);
+                PtablePayment.resetModel();
+                break;
+            } catch (SQLException | ParseException ex) {
+                id_order+=1;
+                ex.printStackTrace();
+            }
+        }
+
+
+
 
     }
 
@@ -153,6 +205,9 @@ public class PaymentUI extends JPanel{
                 bfWriter.write("123124");
                 bfWriter.newLine(); //HERE!!!!!!
                 bfWriter.flush();
+
+                insertPayment();
+
 
                /* while (true){
                     System.out.println("sth");

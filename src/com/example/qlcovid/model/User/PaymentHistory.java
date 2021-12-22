@@ -1,20 +1,23 @@
 package com.example.qlcovid.model.User;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class PaymentHistory {
     private String _ID;
     private String _customer_ID;
-    private LocalDateTime _date;
-    private double _price;
+    private Date _date;
+    private long _price;
 
     public PaymentHistory() {
 
     }
 
-    public PaymentHistory(String _ID, String _customer_ID, String _date, double _price) {
+    public PaymentHistory(String _ID, String _customer_ID, String _date, long _price) throws ParseException {
         this._ID = _ID;
         this._customer_ID = _customer_ID;
         set_date(_date);
@@ -41,21 +44,21 @@ public class PaymentHistory {
         if(_date == null){
             return "";
         }
-        return _date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.s"));
+        return  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(_date);
     }
 
-    public void set_date(String _date) {
+    public void set_date(String _date) throws ParseException {
         if(_date == null || _date.trim().isEmpty()){
             this._date = null;
         }
-        this._date = LocalDateTime.parse(_date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.s"));
-    }
+        this._date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").parse(_date);
+    }//LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
 
     public double get_price() {
         return _price;
     }
 
-    public void set_price(double _price) {
+    public void set_price(long _price) {
         this._price = _price;
     }
 

@@ -1,5 +1,6 @@
 package com.example.qlcovid.jframe.User.Package;
 
+import com.example.qlcovid.jframe.User.Info.BalanceUI;
 import com.example.qlcovid.jframe.User.PtablePackage;
 import com.example.qlcovid.jframe.User.PtablePurchase;
 import com.example.qlcovid.model.User.PackageClass;
@@ -28,6 +29,7 @@ public class PackageInfoUI extends JPanel{
     static JLabel LstartDate;
     static JLabel LendDate;
     static JLabel Lprice;
+    final int LIMIT = 100000;
 
     static JButton BbuyPackage;
 
@@ -74,9 +76,18 @@ public class PackageInfoUI extends JPanel{
         BbuyPackage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try {
+                    if (LIMIT < BalanceUI.getDebt()){
+                        JOptionPane.showMessageDialog(null, "Debt has reached its limit \n Please settle the account.", "Warning", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+
 
                 String sql = "INSERT INTO ql_order(order_id, customer_id, package_id,order_date) " +
-                        "VALUES (?, ?, ?,?)";
+                        "VALUES (?, ?, ?, ?)";
                 PreparedStatement statement = null;
                 try {
                     statement = DatabaseConnection.getJDBC().prepareStatement(sql);
@@ -94,6 +105,7 @@ public class PackageInfoUI extends JPanel{
                         statement.executeUpdate();
 
                         JOptionPane.showMessageDialog(null, "Succeeded", "Message", JOptionPane.INFORMATION_MESSAGE);
+
                         PtablePurchase.resetModel();
                         break;
                     } catch (SQLException ex) {
